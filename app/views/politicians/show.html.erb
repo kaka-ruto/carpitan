@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <%= render 'card_body', politician: @politician %>
+        <div class="card-footer">
+          <%= link_to 'All Politicians', politicians_path, class: 'btn btn-secondary' %>
+          <% if @politician.user == current_user %>
+            <%= link_to 'Edit', edit_politician_path(@politician), class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

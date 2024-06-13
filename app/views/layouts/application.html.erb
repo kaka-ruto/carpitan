@@ -1,19 +1,21 @@
 <!DOCTYPE html>
+
 <html class="h-100">
   <head>
     <%= render 'shared/head' %>
   </head>
 
   <body class="d-flex flex-column h-100">
-    <main class="flex-shrink-0"> 
-      <%= render 'shared/navbar' %>
-      <%= render 'shared/notices' %>
+    <%= render 'shared/navbar', class: 'sticky-top' %>
 
-      <div class="container mt-4 mx-auto">
-        <%= yield %>
-      </div>
-    </main>
+<main class="flex-grow-1">
+  <%= render 'shared/notices' %>
 
-    <%= render 'shared/footer' %>
+  <div class="container my-4">
+    <%= yield %>
+  </div>
+</main>
+
+<%= render 'shared/footer', class: 'mt-auto' %>
   </body>
 </html>

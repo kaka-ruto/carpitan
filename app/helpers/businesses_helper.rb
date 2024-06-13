@@ -1,0 +1,2 @@
+module BusinessesHelper
+end

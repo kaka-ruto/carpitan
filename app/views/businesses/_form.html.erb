@@ -1,0 +1,63 @@
+<%= form_for(business) do |form| %>
+  <%= render "devise/shared/error_messages", resource: business %>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <%= form.label :politician_id, "Select Politician", class: "form-label" %>
+        <%= form.select :politician_id, Politician.all.collect { |p| [p.name, p.id] }, { include_blank: "Select or create one below" }, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= link_to "Create New Politician", new_politician_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <% if business.persisted? %>
+        <div class="float-end">
+          <%= link_to 'Delete business', business, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+        </div>
+      <% end %>
+
+      <div class="mb-3">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :business_phone, class: "form-label" %>
+        <%= form.text_field :business_phone, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :business_email, class: "form-label" %>
+        <%= form.text_field :business_email, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :address, class: "form-label" %>
+        <%= form.text_field :address, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :industry, class: "form-label" %>
+        <%= form.text_field :industry, class: "form-control" %>
+      </div>
+
+      <div class="mb-3 d-grid">
+        <%= form.submit @business.new_record? ? "Create Business" : "Update Business", class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <% if business.persisted? %>
+        <%= link_to "Cancel", business, class: "btn btn-link" %>
+      <% else %>
+        <%= link_to "Cancel", businesses_path, class: "btn btn-link" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

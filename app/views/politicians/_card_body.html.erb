@@ -1,0 +1,44 @@
+<div class="card-body">
+  <h1 class="card-title"><%= politician.name %></h1>
+  <p class="card-text">
+  <strong>Position:</strong> <%= politician.position %><br>
+  <strong>Jurisdiction:</strong> <%= politician.political_party %>
+  </p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Contact Information</h4>
+          <p class="card-text">
+          <% if politician.office_email.present? %>
+            <strong>Email:</strong> <%= mail_to politician.office_email %><br>
+          <% end %>
+          <% if politician.office_phone.present? %>
+            <strong>Phone:</strong> <%= politician.office_phone %><br>
+          <% end %>
+          <% if politician.website.present? %>
+            <strong>Website:</strong> <%= link_to politician.website, politician.website, target: '_blank' %>
+        <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Businesses</h4>
+          <% if politician.businesses.any? %>
+            <ul class="list-unstyled">
+              <% politician.businesses.each do |business| %>
+                <li><%= link_to business.name, business_path(business) %></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="card-text">No businesses associated.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

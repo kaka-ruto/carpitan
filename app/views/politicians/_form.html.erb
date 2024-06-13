@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <h1 class="text-center">Create a new politician</h1>
+<%= form_for(politician) do |form| %>
+  <%= render "devise/shared/error_messages", resource: politician %>
+
+  <div class="mb-3">
+    <% if politician.persisted? %>
+      <div class="float-end">
+        <%= link_to 'Destroy', politician, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+    
+    <div class="mb-3">
+      <%= form.label :name, "Full name", class: "form-label" %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :office_phone, class: "form-label" %>
+      <%= form.text_field :office_phone, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :office_email, class: "form-label" %>
+      <%= form.text_field :office_email, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :position, class: "form-label" %>
+      <%= form.text_field :position, class: "form-control", placeholder: "MP, Senator, Governor, etc."%>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :jurisdiction, class: "form-label" %>
+      <%= form.text_field :jurisdiction, class: "form-control", placeholder: "Bureti constituency, etc"%>
+    </div>
+
+    <div class="mb-3 d-grid">
+      <%= form.submit class: 'btn btn-primary' %>
+
+      <% if politician.persisted? %>
+        <%= link_to "Cancel", politician, class: "btn btn-link" %>
+      <% else %>
+        <%= link_to "Cancel", businesses_path, class: "btn btn-link" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+</div>
+</div>

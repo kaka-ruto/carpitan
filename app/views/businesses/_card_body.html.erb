@@ -1,0 +1,44 @@
+<div class="card-body">
+  <h1 class="card-title"><%= business.name %></h1>
+  <p class="card-text">
+  <strong>Address:</strong> <%= business.address %><br>
+  <strong>Industry:</strong> <%= business.industry %><br>
+  </p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Owner</h4>
+          <% if business.politician %>
+            <p class="card-text">
+            <strong>Name:</strong> <%= link_to business.politician.name, politician_path(business.politician) %><br>
+            <strong>Title:</strong> <%= business.politician.position %><br>
+            <strong>Jurisdiction:</strong> <%= business.politician.jurisdiction %>
+            </p>
+          <% else %>
+            <p class="card-text">No politician associated.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Contact Information</h4>
+          <p class="card-text">
+          <% if business.website.present? %>
+            <strong>Website:</strong> <%= link_to business.website, business.website, target: '_blank' %><br>
+          <% end %>
+          <% if business.business_email.present? %>
+            <strong>Business Email:</strong> <%= mail_to business.business_email %><br>
+          <% end %>
+          <% if business.business_phone.present? %>
+            <strong>Business Phone:</strong> <%= business.business_phone %>
+        <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <%= render 'card_body', business: @business %>
+        <div class="card-footer">
+          <%= link_to 'All Businesses', businesses_path, class: 'btn btn-secondary' %>
+          <% if @business.user == current_user %>
+            <%= link_to 'Edit', edit_business_path(@business), class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

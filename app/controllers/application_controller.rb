@@ -8,8 +8,15 @@ class ApplicationController < ActionController::Base
 
   protected
 
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :avatar])
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :avatar])
+  end
+
+  def require_sign_in
+    unless current_user
+      flash[:alert] = "Please log in first"
+      redirect_to new_user_session_path
     end
+  end
 end
