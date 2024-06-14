@@ -247,6 +247,9 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
@@ -392,6 +395,7 @@ DEPENDENCIES
   noticed (~> 2.0)
   omniauth-facebook (~> 8.0)
   omniauth-github (~> 2.0)
+  omniauth-rails_csrf_protection
   omniauth-twitter (~> 1.4)
   pg (~> 1.1)
   pretender (~> 0.3.4)

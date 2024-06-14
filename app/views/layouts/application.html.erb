@@ -2,7 +2,23 @@
 
 <html class="h-100">
   <head>
+    <title>
+      <% if content_for?(:title) %>
+        <%= yield :title %> |
+      <% end %>
+    </title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
+
+    <% if Rails.env.production? %>
+      <script defer data-domain="carpitan.com" src="https://plausible.io/js/script.js"></script>
+    <% end %>
+
     <%= render 'shared/head' %>
+
+    <%= yield :head %>
   </head>
 
   <body class="d-flex flex-column h-100">
