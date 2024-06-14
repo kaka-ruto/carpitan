@@ -1,9 +1,9 @@
 <div class="position-relative vh-100 overflow-hidden">
   <%= image_tag("carpitan-1.png", class: "position-absolute top-0 start-0 w-100 h-100", alt: "Background Image", style: "object-fit: cover;") %>
   <div class="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-75"></div>
-  <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+  <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3">
     <div class="d-flex justify-content-center">
-      <div class="card bg-black bg-opacity-50 text-white" style="width: 30rem;">
+      <div class="card bg-black bg-opacity-50 text-white" style="max-width: 30rem;">
         <div class="card-body text-center">
           <div class="d-flex justify-content-center mb-4">
             <div class="rounded-pill px-3 py-1 text-sm text-white ring-1 ring-white-10 hover:ring-white-20">
@@ -13,15 +13,15 @@
               <% end %>
             </div>
           </div>
-          <h1 class="card-title text-4xl font-bold tracking-tight text-white sm:text-6xl mb-4">
+          <h1 class="card-title text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">
             Game On.
           </h1>
-          <p class="card-text mt-4 text-lg text-white">
+          <p class="card-text mt-4 text-base text-white">
             We shall keep our leaders accountable.
             If they boycott us and pass the repugnant finance bill,
             we shall boycott their businesses as well.
           </p>
-          <p class="mt-5 mb-3 text-2xl font-bold text-white">We the people.</p>
+          <p class="mt-5 mb-3 text-xl font-bold text-white">We the people.</p>
           <div>
             <%= link_to businesses_path, class: "btn btn-primary rounded-pill px-4 py-2 text-sm font-semibold shadow-sm" do %>
               Businesses of interest
