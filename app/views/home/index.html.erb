@@ -1,6 +1,33 @@
-<h1>Game On</h1>
-<p class="lead">Our leaders must be held accountable</p>
-
-<p> Following are businesses owned by our leaders. Should they pass the oppressive bill, we will boycott these businesses. </p>
-
-<%= link_to "Boycott these businesses", businesses_path, class: "btn btn-primary" %>
+<div class="position-relative vh-100 overflow-hidden">
+  <%= image_tag("carpitan-1.png", class: "position-absolute top-0 start-0 w-100 h-100", alt: "Background Image", style: "object-fit: cover;") %>
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-75"></div>
+  <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+    <div class="d-flex justify-content-center">
+      <div class="card bg-black bg-opacity-50 text-white" style="width: 30rem;">
+        <div class="card-body text-center">
+          <div class="d-flex justify-content-center mb-4">
+            <div class="rounded-pill px-3 py-1 text-sm text-white ring-1 ring-white-10 hover:ring-white-20">
+              More about the finance bill:
+              <%= link_to "https://x.com/NdemoKelvin/status/1801178373634371998", class: "font-semibold text-white", target: "_blank", rel: "noopener noreferrer" do %>
+                Read more <span aria-hidden="true">&rarr;</span>
+              <% end %>
+            </div>
+          </div>
+          <h1 class="card-title text-4xl font-bold tracking-tight text-white sm:text-6xl mb-4">
+            Game On.
+          </h1>
+          <p class="card-text mt-4 text-lg text-white">
+            We shall keep our leaders accountable.
+            If they boycott us and pass the repugnant finance bill,
+            we shall remind them who the real Captain is and boycott their businesses as well.
+          </p>
+          <div class="mt-5">
+            <%= link_to businesses_path, class: "btn btn-primary rounded-pill px-4 py-2 text-sm font-semibold shadow-sm" do %>
+              Businesses of interest
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
