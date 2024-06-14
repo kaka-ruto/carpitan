@@ -9,7 +9,8 @@ servers:
     hosts:
       - 159.69.242.1
     labels:
-      traefik.http.routers.carpitan.rule: Host(`*.carpitan.com`)
+      traefik.http.routers.carpitan.tls.domains[0].main: Host(`carpitan.com`)
+      traefik.http.routers.carpitan.tls.domains[0].sans: Host(`*.carpitan.com`)
       traefik.http.routers.carpitan.entrypoints: websecure
       traefik.http.routers.carpitan.tls.certresolver: letsencrypt
 
