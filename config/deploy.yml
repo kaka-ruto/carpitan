@@ -1,18 +1,267 @@
 ---
+################################################################################
+#
+# Configuration Notes
+#
+################################################################################
+#
+# 1) Regarding A+ ratings in SSL Labs reports [1]:
+#    Many guides provide options that add security headers [2]. The examples
+#    that I found were not documented very well, and it might be worth just
+#    following the "HTTP Headers - OWASP Cheat Sheet Series" [3]; however, AFAIK
+#    Rails already provides sane defaults [4] for you.
+#
+#    [1] - https://www.ssllabs.com/ssltest/
+#    [2] - https://doc.traefik.io/traefik/middlewares/http/headers/
+#    [3] - https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
+#    [4] - https://guides.rubyonrails.org/security.html#http-security-headers
+#
+# 2) SSL Labs provides a list of local tools [1] that can be used for SSL
+#    assessment on your servers. The "testssl.sh" [2] tool works well and can be
+#    run straight from Docker.
+#
+#    Example:
+#
+#      $ docker run --rm -ti  drwetter/testssl.sh https://test1.deploy-test.example.com
+#
+#    [1] - https://github.com/ssllabs/research/wiki/Assessment-Tools
+#    [2] - https://github.com/drwetter/testssl.sh
+#
+# 
+# 3) Lots of guides have assume_ssl turned ON and force_ssl turned OFF; however,
+#    the "config/environments/production.rb" "config.assume_ssl"comments have
+#    this to say:
+#
+#       Can be used together with config.force_ssl for Strict-Transport-Security
+#       and secure cookies.
+#
+#    More discussion from the maybe-finance project [1]:
+#
+#      ezekg commented:
+#
+#      It's worth mentioning that any well-behaved reverse proxy should be
+#      setting the X-Forwarded-* headers. Namely, X-Forwarded-Proto, which Rails
+#      uses to determine if the request is coming from a TLS-terminating reverse
+#      proxy. If X-Forwarded-Proto: https, then Rails will NOT redirect the
+#      request, because it knows it's coming from a TLS-terminating reverse
+#      proxy. So the only case where config.force_ssl = false is actually needed
+#      is for misbehaving reverse proxies.
+#
+#   Later a note [2] is added saying that Campfire turns ON both of these
+#   options in production.
+#
+#   The Rails Action Dispatch SSL docs say more about the benefits of
+#   "config.force_ssl" [3].
+#   
+#   Turning both on seems to work fine with Kamal/Traefik though, where SSL is
+#   terminated at the load balancer and traffic from the load balancer to app
+#   servers is insecure. I need to study the headers in more detail.  I did not
+#   dig into the source for this issue, yet.
+#
+#   [1] - https://github.com/maybe-finance/maybe/issues/308#issuecomment-1944936184
+#   [2] - https://github.com/maybe-finance/maybe/issues/308#issuecomment-1934615353
+#   [3] - https://api.rubyonrails.org/v7.1.3.2/classes/ActionDispatch/SSL.html
+#
+#   ############################################################################
+#   # Example environment config
+#   ############################################################################
+#     # config/environments/production.rb
+#
+#     # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+#     # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
+#     config.assume_ssl = true
+#
+#     # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+#     # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
+#     config.force_ssl = true
+#
+################################################################################
+
+
+################################################################################
+#
+# Extra Debugging Tips
+#
+################################################################################
+#
+# 1) Examine the command line arguments passed to docker container on the 
+#    running container on the app server:
+#
+#   $ docker inspect -f "{{json .Config.Cmd}}" traefik | jq
+#
+#   [
+#     "--providers.docker",
+#     "--log.level=DEBUG",
+#     "--entrypoints.web.address=:80",
+#     "--entrypoints.websecure.address=:443",
+#     "--providers.file.filename=/letsencrypt/tls.yml",
+#     "--certificatesresolvers.letsencrypt.acme.email=johndoe@example.com",
+#     "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json",
+#     "--certificatesresolvers.letsencrypt.acme.dnschallenge",
+#     "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=linode",
+#     "--entryPoints.web.http.redirections.entryPoint.to=websecure",
+#     "--entryPoints.web.http.redirections.entryPoint.scheme=https",
+#     "--entryPoints.web.http.redirections.entrypoint.permanent"
+#   ]
+#
+# 2) Examine the labels on the running traefik docker container on the app
+#    server
+#
+#     docker inspect -f "{{json .Config.Labels}}" traefik | jq
+#     {
+#       "org.opencontainers.image.description": "A modern reverse-proxy",
+#       "org.opencontainers.image.documentation": "https://docs.traefik.io",
+#       "org.opencontainers.image.source": "https://github.com/traefik/traefik",
+#       "org.opencontainers.image.title": "Traefik",
+#       "org.opencontainers.image.url": "https://traefik.io",
+#       "org.opencontainers.image.vendor": "Traefik Labs",
+#       "org.opencontainers.image.version": "v2.9.10",
+#       "traefik.http.routers.catchall.entryPoints": "web",
+#       "traefik.http.routers.catchall.priority": "1",
+#       "traefik.http.routers.catchall.rule": "PathPrefix(`/`)",
+#       "traefik.http.routers.catchall.service": "unavailable",
+#       "traefik.http.services.unavailable.loadbalancer.server.port": "0"
+#     }
+#
+################################################################################
+
+
+################################################################################
+# Common variables
+#
+# kamal uses ERB Ruby module to read config:
+# https://github.com/basecamp/kamal/blob/9ec3895dab2772915c44f3a348e54de58981857d/lib/mrsk/configuration.rb#L29
+################################################################################
+<%
+  service_name = "carpitan"
+  registry = "ghcr.io"
+  registry_username = "kaka-ruto"
+  ip = "159.69.242.1"
+  domain = "carpitan.com"
+  letsencrypt_email = "security@carpitan.com"
+  letsencrypt_provider = "cloudflare"
+  letsencrypt_provider_secret_name = "<%= ENV['CLOUDFLARE_API_KEY']"
+%>
+
 # Name of your application. Used to uniquely configure containers.
-service: carpitan
+service: <%= service_name %>
 
-image: kaka-ruto/carpitan
+# Name of the container image.
+image: <%= registry_username %>/<%= service_name %>
 
+# Deploy to these servers.
 servers:
   web:
     hosts:
-      - 159.69.242.1
+      - <%= ip %>
     labels:
-      traefik.http.routers.carpitan.tls.domains[0].main: Host(`carpitan.com`)
-      traefik.http.routers.carpitan.tls.domains[0].sans: Host(`*.carpitan.com`)
-      traefik.http.routers.carpitan.entrypoints: websecure
-      traefik.http.routers.carpitan.tls.certresolver: letsencrypt
+      ##########################################################################
+      # Host Rule:
+      #   Check if the request domain (host header value) targets one of the
+      #   given domains.
+      #     Example: Host(`example.com`, ...)
+      #
+      # HostRegexp Rule:
+      #   Match the request domain. See "Regexp Syntax" below.
+      #     Example: HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`, ...)
+      #
+      # NOTES:
+      #   "Host" rules are for HTTP routers [1] and "HostSNI" rules are for TCP
+      #   routers [2].
+      #  
+      #   If both HTTP routers and TCP routers listen to the same entry points,
+      #   the TCP routers will apply before the HTTP routers. If no matching route
+      #   is found for the TCP routers, then the HTTP routers will take over.
+      #  
+      #   [1] - https://doc.traefik.io/traefik/routing/routers/#rule
+      #   [2] - https://doc.traefik.io/traefik/routing/routers/#rule_1
+      #
+      ##########################################################################
+      # FAQ:
+      ##########################################################################
+      #
+      # 1) Why the "subdomain" part?
+      #
+      #   Regexp Syntax [1]
+      #
+      #   HostRegexp, PathPrefix, and Path accept an expression with zero or
+      #   more groups enclosed by curly braces, which are called named regexps.
+      #   Named regexps, of the form {name:regexp}, are the only expressions
+      #   considered for regexp matching. The regexp name (name in the above
+      #   example) is an arbitrary value, that exists only for historical
+      #   reasons.
+      #  
+      #   Any regexp supported by Go's [2] regexp package may be used. For
+      #   example, here is a case insensitive path matcher syntax:
+      #  
+      #     Path(`/{path:(?i:Products)}`).
+      #   
+      #   [1] - https://doc.traefik.io/traefik/routing/routers/#  rule
+      #   [2] - https://golang.org/pkg/regexp/
+      #
+      # 2) Why not combine everything into the single Regexp?
+      #
+      #   You can choose get fancy with the HostRegexp but I prefer using the
+      #   OR (||) syntax here and keeping it a bit simpler to read. We have:
+      #
+      #     a) HostRegexp for wildcard
+      #     b) Host for base domain
+      #     c) Not listed, but anything else you want to match including other
+      #        completely different domains
+      #
+      # 3) I see some examples that look like this: HostRegexp(`.+`)
+      #    Can I use that more simple regex?
+      #
+      #    No, this is Traefik v3 syntax which is not stable yet (currently in
+      #    RC). Kamal uses v2 which is the current stable release which doesn't
+      #    support that syntax [1].
+      #    
+      #    [1] - https://doc.traefik.io/traefik/v3.0/migration/v2-to-v3/#new-v3-syntax-notable-changes
+      #
+      traefik.http.routers.<%= service_name %>.rule: HostRegexp(`{subdomain:[a-zA-Z0-9-]+}.<%= domain %>`) || Host(`<%= domain %>`)
+
+      # Allow request only from the predefined entry point named "websecure";
+      # that is, it won't listen to the insecure "web" entrypoint that doesn't
+      # have SSL enabled.
+      #
+      # https://doc.traefik.io/traefik/routing/routers/#entrypoints
+      traefik.http.routers.<%= service_name %>.entrypoints: websecure
+      
+      ##########################################################################
+      # When a TLS section is specified, it instructs Traefik that the current
+      # router is dedicated to TLS requests only (and that the router should
+      # ignore non-TLS requests).
+      #
+      # By default, a router with a TLS section will terminate the TLS
+      # connections, meaning that it will send decrypted data to the services.
+      #
+      # https://doc.traefik.io/traefik/routing/routers/#tls
+      #
+      ##########################################################################
+      
+      # NOTE: this option is implied if other ".tls" options are used and does
+      # not have to be explicitly set.
+      #traefik.http.routers.<%= service_name %>.tls: true
+      
+      # If certResolver is defined, Traefik will try to generate certificates
+      # based on routers Host & HostSNI rules.
+      #
+      # NOTE: this much match the name from the traefik config
+      # certificatesresolvers args, e.g.:
+      #
+      #   certificatesresolvers.letsencrypt.acme.dnschallenge: true
+      #                         ^^^^^^^^^^^
+      traefik.http.routers.<%= service_name %>.tls.certresolver: letsencrypt
+
+      # You can set SANs (alternative domains) for each main domain [1]. Every
+      # domain must have A/AAAA records pointing to Traefik. Each domain & SAN
+      # will lead to a certificate request.
+      #
+      # References:
+      # [1] - https://doc.traefik.io/traefik/routing/routers/#domains
+      #
+      traefik.http.routers.<%= service_name %>.tls.domains[0].main: <%= domain %>
+      traefik.http.routers.<%= service_name %>.tls.domains[0].sans: "*.<%= domain %>"
 
 traefik:
   options:
@@ -20,78 +269,199 @@ traefik:
       - "443:443"
     volume:
       - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+      - "/letsencrypt/tls.yml:/letsencrypt/tls.yml"
+  labels:
+    # Kamal provides a "catchall" configuration [1] in its default labels for
+    # the traefik container which ensures a 502 status code is served rather
+    # than a 404 if no containers are available. You can see more details in the
+    # traefik docs [2].
+    #
+    # Most of the traefik docs name the port 80 entrypoint "web" and port 443
+    # entrypoint "websecure" which is what I've used throughout this example;
+    # however, Kamal has named it "http". I prefer "web" because "http" is
+    # already used for other things like Entrypoints HTTP Options which can be
+    # a little confusing. For example:
+    #
+    #   entryPoints.web.http...
+    #   vs.
+    #   entryPoints.http.http...
+    #
+    # Here, the Kamal default "http" is overriden with "web"
+    #
+    # The labels can be inspected on the running container on the app server
+    # with this command (must install jq utility):
+    #   
+    #   $ docker inspect -f "{{json .Config.Labels}}" traefik | jq
+    #
+    # [1] - https://github.com/basecamp/kamal/blob/e8b9f8907f16416accb47ba2208185f1ea91754b/lib/kamal/commands/traefik.rb#L11
+    # [2] - https://doc.traefik.io/traefik/getting-started/faq/#xxx-instead-of-404
+    #
+    traefik.http.routers.catchall.entryPoints: web
+
   args:
-    entryPoints.web.address: ":80"
-    entryPoints.websecure.address: ":443"
+    ############################################################################
+    # Entrypoints
+    #
+    #  EntryPoints are the network entry points into Traefik. They define the
+    #  port which will receive the packets, and whether to listen for TCP or
+    #  UDP.
+    #
+    #  https://doc.traefik.io/traefik/routing/entrypoints/#entrypoint
+    ############################################################################
+    # Define ports for http and https traffic here:
+    entrypoints.web.address: ":80"
+    entrypoints.websecure.address: ":443"
+    
+    ############################################################################
+    # TLS Options (optional)
+    #
+    #   Some options like these TLS options are not able to be set with docker
+    #   labels [1], yet. Here we provide the filename for these options. This
+    #   must be added in the volume section above and the file needs to be
+    #   created before kamal setup on the server itself just like with the
+    #   acme.json file.
+    #
+    #   NOTE: This is completely optional and only needed if you want to
+    #   add extra TLS options like "sniStrict: true" [2].
+    #
+    #   https://doc.traefik.io/traefik/https/tls/#tls-options
+    #   
+    #   References:
+    #   [1] - https://github.com/basecamp/kamal/discussions/674
+    #   [2] - https://doc.traefik.io/traefik/https/tls/#strict-sni-checking
+    ############################################################################
+    # The file provider lets you define the dynamic configuration in a YAML
+    # or TOML file.
+    # https://doc.traefik.io/traefik/providers/file/#filename
+    providers.file.filename: "/letsencrypt/tls.yml"
+    
+    ############################################################################
+    # Let's Encrypt: common configuration
+    #
+    # https://doc.traefik.io/traefik/https/acme/
+    ############################################################################
+    # Email address used for registration. (Required)
+    certificatesresolvers.letsencrypt.acme.email: "<%= letsencrypt_email %>"
+    # File or key used for certificates storage. (Required)
+    certificatesresolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
+    
+    ############################################################################
+    # Let's Encrypt: httpChallenge (Optional)
+    #
+    # https://doc.traefik.io/traefik/https/acme/#httpchallenge
+    ############################################################################
+    # Use a HTTP-01 ACME challenge. (Optional)
+    #certificatesresolvers.letsencrypt.acme.httpchallenge: true
+    # EntryPoint to use for the HTTP-01 challenges. (Required)
+    #certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint: web
+    
+    ############################################################################
+    # Let's Encrypt: dnsChallenge
+    #
+    # https://doc.traefik.io/traefik/https/acme/#dnschallenge
+    ############################################################################
+    # Use a DNS-01 ACME challenge rather than HTTP-01 challenge. Note: mandatory
+    # for wildcard certificate generation. (Optional)
+    certificatesresolvers.letsencrypt.acme.dnschallenge: true
+    # DNS provider used. (Required)
+    certificatesresolvers.letsencrypt.acme.dnschallenge.provider: <%= letsencrypt_provider %>
+
+    ############################################################################
+    # Globally redirect http to https
+    #
+    # https://doc.traefik.io/traefik/routing/entrypoints/#redirection
+    ############################################################################
     entryPoints.web.http.redirections.entryPoint.to: websecure
     entryPoints.web.http.redirections.entryPoint.scheme: https
     entryPoints.web.http.redirections.entrypoint.permanent: true
-    certificatesResolvers.letsencrypt.acme.email: "security@carpitan.com"
-    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
-    certificatesResolvers.letsencrypt.acme.httpchallenge: true
-    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: web
+  env:
+    secret:
+      - <%= letsencrypt_provider_secret_name %>
 
+# Credentials for your image host.
 registry:
-  server: ghcr.io
-  username: kaka-ruto
+  # Specify the registry server, if you're not using Docker Hub
+  server: <%= registry %>
+  username: <%= registry_username %>
+  # Always use an access token rather than real password when possible.
   password:
     - KAMAL_REGISTRY_PASSWORD
 
-builder:
-  args:
-    RUBY_VERSION: 3.3.0
-    RAILS_ENV: production
-  secrets:
-    - KAMAL_REGISTRY_PASSWORD
-  # Comment when running kamal setup/deploy on Apple Silicon
-  multiarch: false
-  cache:
-    type: registry
-  # Uncomment when running kamal setup/deploy deploying from Apple Silicon
-  # remote:
-  #   arch: amd64
-  #   host: ssh://root@159.69.242.1
-
+# Inject ENV variables into containers (secrets come from .env).
+# Remember to run `kamal env push` after making changes!
 env:
   clear:
-    RAILS_LOG_TO_STDOUT: 1
-    RAILS_SERVE_STATIC_FILES: 1
+    POSTGRES_HOST: "<%= ip %>" # With the pattern: <service_name>-<accessory_name>
+    REDIS_URL: "redis://<%= ip %>:6379/0" # We need to override the REDIS_URL (used by Sidekiq and your cache_store), same pattern: <service_name>-<accessory_name>
   secret:
+    - KAMAL_REGISTRY_PASSWORD
     - RAILS_MASTER_KEY
-    - POSTGRES_HOST
-    - DATABASE_URL
-    # - REDIS_URL
 
+# Use a different ssh user than root
+# ssh:
+#   user: app
+
+# Configure builder setup.
+# builder:
+#   args:
+#     RUBY_VERSION: 3.2.0
+#   secrets:
+#     - GITHUB_TOKEN
+#   remote:
+#     arch: amd64
+#     host: ssh://app@192.168.0.1
+builder:
+  multiarch: false
+  local:
+    arch: amd64
+
+# Use accessory services (secrets come from .env).
+# accessories:
+#   db:
+#     image: mysql:8.0
+#     host: 192.168.0.2
+#     port: 3306
+#     env:
+#       clear:
+#         MYSQL_ROOT_HOST: '%'
+#       secret:
+#         - MYSQL_ROOT_PASSWORD
+#     files:
+#       - config/mysql/production.cnf:/etc/mysql/my.cnf
+#       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
+#     directories:
+#       - data:/var/lib/mysql
+#   redis:
+#     image: redis:7.0
+#     host: 192.168.0.2
+#     port: 6379
+#     directories:
+#       - data:/data
 accessories:
   postgres:
-    image: postgres:16.0
-    host: 159.69.242.1
+    image: postgres:16.2-bullseye
+    host: <%= ip %>
     port: 5432
     env:
+      clear:
+        POSTGRES_USER: 'postgres'
+        POSTGRES_DB: "<%= service_name %>_production"
       secret:
-        - POSTGRES_USER
         - POSTGRES_PASSWORD
-        - POSTGRES_DATABASE
-        - POSTGRES_PORT
-    directories:
-      - data:/var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
 
-  # redis:
-  #   image: redis:latest
-  #   host: REDIS_HOST
-  #   port: REDIS_PORT
-  #   cmd: "/bin/sh -c 'redis-server --requirepass $REDIS_PASSWORD'"
-  # options:
-  # network: "headportfolio"
-  #   env:
-  #     secret:
-  #       - REDIS_PASSWORD
-  #   volumes:
-  #     - /var/lib/redis:/data
+  redis:
+    image: redis:7.2.4-alpine
+    roles:
+      - web
+    port: "6379:6379"
+    volumes:
+      - redis:/var/lib/redis
 
   backup:
     image: eeshugerman/postgres-backup-s3:16
-    host: 159.69.242.1
+    host: <%= ip %>
     env:
       clear:
         SCHEDULE: "@daily"
@@ -108,7 +478,35 @@ accessories:
         - POSTGRES_DATABASE
         - POSTGRES_HOST
 
-healthcheck:
-  log_lines: 500
+# Configure custom arguments for Traefik
+# traefik:
+#   args:
+#     accesslog: true
+#     accesslog.format: json
 
-asset_path: /rails/public/assets
+# Configure a custom healthcheck (default is /up on port 3000)
+# healthcheck:
+#   path: /healthz
+#   port: 4000
+
+# Bridge fingerprinted assets, like JS and CSS, between versions to avoid
+# hitting 404 on in-flight requests. Combines all files from new and old
+# version inside the asset_path.
+# asset_path: /rails/public/assets
+
+# Configure rolling deploys by setting a wait time between batches of restarts.
+# boot:
+#   limit: 10 # Can also specify as a percentage of total hosts, such as "25%"
+#   wait: 2
+
+# Configure the role used to determine the primary_host. This host takes
+# deploy locks, runs health checks during the deploy, and follow logs, etc.
+#
+# Caution: there's no support for role renaming yet, so be careful to cleanup
+#          the previous role on the deployed hosts.
+# primary_role: web
+
+# Controls if we abort when see a role with no hosts. Disabling this may be
+# useful for more complex deploy configurations.
+#
+# allow_empty_roles: false

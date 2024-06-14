@@ -1,0 +1,87 @@
+tls:
+  options:
+    default:
+      ##########################################################################
+      # From moz://a SSL Configuration Generator
+      #
+      # Intermediate - General-purpose servers with a variety of clients,
+      # recommended for almost all systems
+      #
+      # generated 2024-03-11, Mozilla Guideline v5.7, Traefik 2.9, intermediate
+      # configuration
+      #
+      # Supports Firefox 27, Android 4.4.2, Chrome 31, Edge, IE 11 on Windows 7,
+      # Java 8u31, OpenSSL 1.0.1, Opera 20, and Safari 9
+      #
+      # https://ssl-config.mozilla.org/#server=traefik&version=2.9&config=intermediate&guideline=5.7
+      # https://doc.traefik.io/traefik/https/tls/#cipher-suites
+      #
+      ##########################################################################
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+
+      ##########################################################################
+      # With strict SNI checking enabled, Traefik won't allow connections from
+      # clients that do not specify a server_name extension or don't match any
+      # of the configured certificates. The default certificate is irrelevant on
+      # that matter.
+      #
+      # NOTE: This will obviously disable all access to your site using anything
+      # other than the DNS records with SSL certs that you have specifically set
+      # in the Kamal traefik config. You will not be able to access your site
+      # using an IP address or DNS record with no cert for instance. This
+      # setting is completely optional and just an extra security precaution.
+      #
+      # https://doc.traefik.io/traefik/https/tls/#strict-sni-checking
+      #
+      ##########################################################################
+      sniStrict: true
+      
+      ##########################################################################
+      # This option allows to set the preferred elliptic curves in a specific
+      # order.
+      #
+      # NOTE: If you leave this section out, you can still get an A+ SSL Labs
+      # rating; however, the "Key Exchange" will have a grade of 90. The
+      # testssl.sh utility will give a 100 grade, though. Adding this section
+      # raises the grade to 100 on the website test. I can't see any differences
+      # on the web reports. The only significant difference in the # testssl.sh
+      # reports that I can find are compatibility with Android 7.0; that is,
+      # setting these more strict curve options limits compatibility with
+      # Android 7.0 (released on August 22, 2016).
+      #
+      #   CSV diff (left with curvePreferences enabled, right with defaults):
+      #     < "clientsimulation-android_70","test1.example.com/192.168.1.10","443","INFO","No connection","",""
+      #     ---
+      #     > "clientsimulation-android_70","test1.example.com/192.168.1.10","443","INFO","TLSv1.2 ECDHE-RSA-AES128-GCM-SHA256","",""
+      #
+      # NOTE: These options are recommended in the Traefik docs, but I haven't
+      # found the full justification for these being the "safe" [1] values or if
+      # they really need to be manually configured or not. AFAIK, Chrome doesn't
+      # support CurveP521 (secp521r1). Your browser can be tested at SSL
+      # Labs [2]. It's up to you if you want to chase a 100 grade on the "Key
+      # Exchange" when you get an A+ rating either way. Just see what's best for
+      # your environment.
+      #
+      # NOTE: The "testssl.sh" [3] tool reports the following defaults when not
+      # explicitly setting it here:
+      # Elliptic curves offered:     prime256v1 secp384r1 secp521r1 X25519
+      #
+      # [1] - https://community.letsencrypt.org/t/when-choosing-an-elliptic-curve-look-for-a-safe-curve/161837/3
+      # [2] - https://clienttest.ssllabs.com:8443/ssltest/viewMyClient.html
+      # [3] - https://github.com/drwetter/testssl.sh
+      #
+      # https://doc.traefik.io/traefik/https/tls/#curve-preferences
+      #
+      ##########################################################################
+      curvePreferences:
+        # - X25519
+        - CurveP521
+        - CurveP384
+        # - CurveP256
