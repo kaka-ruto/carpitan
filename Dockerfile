@@ -4,6 +4,8 @@
 ARG RUBY_VERSION=3.3.0
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
+LABEL service="carpitan"
+
 # Rails app lives here
 WORKDIR /rails
 

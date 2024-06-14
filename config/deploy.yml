@@ -1,0 +1,121 @@
+---
+# Name of your application. Used to uniquely configure containers.
+service: carpitan
+
+image: kaka-ruto/carpitan
+
+servers:
+  web:
+    hosts:
+      - 195.201.97.206
+    labels:
+      traefik.http.routers.carpitan.rule: Host(`*.carpitan.com`)
+      traefik.http.routers.carpitan.entrypoints: websecure
+      traefik.http.routers.carpitan.tls.certresolver: letsencrypt
+
+traefik:
+  options:
+    publish:
+      - "443:443"
+    volume:
+      - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+  args:
+    entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+    entryPoints.web.http.redirections.entryPoint.to: websecure
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+    entrypoints.websecure.http.tls: true
+    entrypoints.websecure.http.tls.domains[0].main: "carpitan.com"
+    entrypoints.websecure.http.tls.domains[0].sans: "*.carpitan.com"
+    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
+    # certificatesResolvers.letsencrypt.acme.email: CLOUDFLARE_EMAIL
+    # certificatesresolvers.letsencrypt.acme.dnschallenge.provider: cloudflare
+    accesslog: true
+    accesslog.format: json
+  # env:
+  #   secret:
+  #     - CLOUDFLARE_API_KEY
+  #     - CLOUDFLARE_EMAIL
+
+registry:
+  server: ghcr.io
+  username: kaka-ruto
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  args:
+    RUBY_VERSION: 3.3.0
+    RAILS_ENV: production
+  secrets:
+    - KAMAL_REGISTRY_PASSWORD
+  # Comment when running kamal setup/deploy on Apple Silicon
+  multiarch: false
+  cache:
+  #   type: registry
+  # Uncomment when running kamal setup/deploy deploying from Apple Silicon
+  # remote:
+  #   arch: amd64
+  #   host: ssh://username@195.201.97.206
+
+env:
+  clear:
+    RAILS_LOG_TO_STDOUT: 1
+    RAILS_SERVE_STATIC_FILES: 1
+  secret:
+    - RAILS_MASTER_KEY
+    - POSTGRES_HOST
+    - DATABASE_URL
+    # - REDIS_URL
+
+accessories:
+  postgres-carpitan:
+    image: postgres:16.0
+    host: 195.201.97.206
+    options:
+      publish:
+        - 5436:5432
+    env:
+      secret:
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+        - POSTGRES_DATABASE
+        - POSTGRES_PORT
+    directories:
+      - data:/var/lib/postgresql/data
+
+  # redis:
+  #   image: redis:latest
+  #   host: REDIS_HOST
+  #   port: REDIS_PORT
+  #   cmd: "/bin/sh -c 'redis-server --requirepass $REDIS_PASSWORD'"
+  #   env:
+  #     secret:
+  #       - REDIS_PASSWORD
+  #   volumes:
+  #     - /var/lib/redis:/data
+
+  backup-carpitan:
+    image: eeshugerman/postgres-backup-s3:16
+    host: 195.201.97.206
+    env:
+      clear:
+        SCHEDULE: "@daily"
+        BACKUP_KEEP_DAYS: 7
+      secret:
+        - S3_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY
+        - S3_REGION
+        - S3_ENDPOINT
+        - S3_BUCKET
+        - S3_PREFIX
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+        - POSTGRES_DATABASE
+        - POSTGRES_HOST
+
+healthcheck:
+  log_lines: 500
+
+asset_path: /rails/public/assets

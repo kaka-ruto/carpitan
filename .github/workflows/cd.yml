@@ -1,0 +1,80 @@
+---
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+  KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: kaka-ruto/carpitan
+  RUBY_VERSION: 3.3.0
+
+jobs:
+  CI:
+    uses: ./.github/workflows/verify.yml
+  CD:
+    name: Continuous Deployment
+    needs: [CI]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          build-args: |
+            "RUBY_VERSION=${{ env.RUBY_VERSION }}"
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          tags: |
+            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Shipit!
+        run: |
+          ./bin/kamal deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          # REDIS_URL: ${{ secrets.REDIS_URL }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          # CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          # CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          RAILS_ENV: production
+          RUBY_VERSION: ${{ env.RUBY_VERSION }}
+          DOCKER_BUILDKIT: 1

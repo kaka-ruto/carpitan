@@ -79,6 +79,5 @@ test:
 #
 production:
   <<: *default
-  database: carpitan_production
-  username: carpitan
-  password: <%= ENV["CARPITAN_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
+  host: <%= ENV["POSTGRES_HOST"] %>

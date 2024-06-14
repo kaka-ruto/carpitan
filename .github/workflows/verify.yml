@@ -1,8 +1,23 @@
 # See https://github.com/andyw8/setup-rails for more information
 
 name: Verify
-on: [push]
+on:
+  pull_request:
+    branches:
+      - "*"
+  push:
+    branches:
+      - main
+  workflow_call:
 
 jobs:
   verify:
-    uses: andyw8/setup-rails/.github/workflows/verify.yml@v1
+    uses: setup-rails/setup-rails/.github/workflows/verify.yml@v1
+    # uncomment to enable options:
+    #
+    # with:
+    #   brakeman: true
+    #   bundler-audit: true
+    #   rspec: true
+    #   rubocop: true
+    # standard: true
