@@ -7,11 +7,28 @@ image: kaka-ruto/carpitan
 servers:
   web:
     hosts:
-      - 195.201.97.206
-    options:
-      network: "headportfolio"
+      - 159.69.242.1
     labels:
-      traefik.http.routers.carpitan.rule: HostRegexp(`carpitan.com`, `{subdomain:[a-z0-9]+}.carpitan.com`)
+      traefik.http.routers.carpitan.rule: Host(`*.carpitan.com`)
+      traefik.http.routers.carpitan.entrypoints: websecure
+      traefik.http.routers.carpitan.tls.certresolver: letsencrypt
+
+traefik:
+  options:
+    publish:
+      - "443:443"
+    volume:
+      - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+  args:
+    entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+    entryPoints.web.http.redirections.entryPoint.to: websecure
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+    certificatesResolvers.letsencrypt.acme.email: "security@carpitan.com"
+    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
+    certificatesResolvers.letsencrypt.acme.httpchallenge: true
+    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: web
 
 registry:
   server: ghcr.io
@@ -28,11 +45,11 @@ builder:
   # Comment when running kamal setup/deploy on Apple Silicon
   multiarch: false
   cache:
-  #   type: registry
+    type: registry
   # Uncomment when running kamal setup/deploy deploying from Apple Silicon
   # remote:
   #   arch: amd64
-  #   host: ssh://username@195.201.97.206
+  #   host: ssh://root@159.69.242.1
 
 env:
   clear:
@@ -45,13 +62,10 @@ env:
     # - REDIS_URL
 
 accessories:
-  postgres-carpitan:
+  postgres:
     image: postgres:16.0
-    host: 195.201.97.206
-    options:
-      network: "headportfolio"
-      publish:
-        - 5436:5432
+    host: 159.69.242.1
+    port: 5432
     env:
       secret:
         - POSTGRES_USER
@@ -74,11 +88,9 @@ accessories:
   #   volumes:
   #     - /var/lib/redis:/data
 
-  backup-carpitan:
+  backup:
     image: eeshugerman/postgres-backup-s3:16
-    host: 195.201.97.206
-    options:
-      network: "headportfolio"
+    host: 159.69.242.1
     env:
       clear:
         SCHEDULE: "@daily"
