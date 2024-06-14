@@ -9,11 +9,9 @@ servers:
     hosts:
       - 195.201.97.206
     options:
-      "add-host": host.docker.internal:host-gateway
+      network: "headportfolio"
     labels:
-      traefik.http.routers.carpitan.rule: Host(`*.carpitan.com`)
-      traefik.http.routers.carpitan.entrypoints: websecure
-      traefik.http.routers.carpitan.tls.certresolver: letsencrypt
+      traefik.http.routers.carpitan.rule: HostRegexp(`carpitan.com`, `{subdomain:[a-z0-9]+}.carpitan.com`)
 
 registry:
   server: ghcr.io
@@ -51,6 +49,7 @@ accessories:
     image: postgres:16.0
     host: 195.201.97.206
     options:
+      network: "headportfolio"
       publish:
         - 5436:5432
     env:
@@ -67,6 +66,8 @@ accessories:
   #   host: REDIS_HOST
   #   port: REDIS_PORT
   #   cmd: "/bin/sh -c 'redis-server --requirepass $REDIS_PASSWORD'"
+  # options:
+  # network: "headportfolio"
   #   env:
   #     secret:
   #       - REDIS_PASSWORD
@@ -76,6 +77,8 @@ accessories:
   backup-carpitan:
     image: eeshugerman/postgres-backup-s3:16
     host: 195.201.97.206
+    options:
+      network: "headportfolio"
     env:
       clear:
         SCHEDULE: "@daily"
