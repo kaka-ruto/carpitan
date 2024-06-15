@@ -71,10 +71,8 @@ jobs:
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          # REDIS_URL: ${{ secrets.REDIS_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          # CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
-          # CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           RAILS_ENV: production
           RUBY_VERSION: ${{ env.RUBY_VERSION }}
           DOCKER_BUILDKIT: 1

@@ -136,11 +136,10 @@
   service_name = "carpitan"
   registry = "ghcr.io"
   registry_username = "kaka-ruto"
-  ip = "159.69.242.1"
+  ip = ENV['WEB_HOST']
   domain = "carpitan.com"
-  letsencrypt_email = "security@carpitan.com"
+  letsencrypt_email = ENV['CLOUDFLARE_EMAIL']
   letsencrypt_provider = "cloudflare"
-  letsencrypt_provider_secret_name = "<%= ENV['CLOUDFLARE_API_KEY']"
 %>
 
 # Name of your application. Used to uniquely configure containers.
@@ -376,7 +375,7 @@ traefik:
     entryPoints.web.http.redirections.entrypoint.permanent: true
   env:
     secret:
-      - <%= letsencrypt_provider_secret_name %>
+      - CLOUDFLARE_API_KEY
 
 # Credentials for your image host.
 registry:
@@ -392,10 +391,10 @@ registry:
 env:
   clear:
     POSTGRES_HOST: "<%= ip %>" # With the pattern: <service_name>-<accessory_name>
-    REDIS_URL: "redis://<%= ip %>:6379/0" # We need to override the REDIS_URL (used by Sidekiq and your cache_store), same pattern: <service_name>-<accessory_name>
   secret:
     - KAMAL_REGISTRY_PASSWORD
     - RAILS_MASTER_KEY
+    - WEB_HOST
 
 # Use a different ssh user than root
 # ssh:
@@ -458,7 +457,11 @@ accessories:
     port: "6379:6379"
     volumes:
       - redis:/var/lib/redis
+    env:
+      secret:
+        - REDIS_URL
 
+  # TODO: set up R2 buckets
   backup:
     image: eeshugerman/postgres-backup-s3:16
     host: <%= ip %>
