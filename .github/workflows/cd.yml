@@ -10,6 +10,7 @@ on:
 env:
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+  WEB_HOST: ${{ secrets.WEB_HOST }}
   REGISTRY: ghcr.io
   IMAGE_NAME: kaka-ruto/carpitan
   RUBY_VERSION: 3.3.0
@@ -73,6 +74,7 @@ jobs:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          WEB_HOST: ${{ env.WEB_HOST }}
           RAILS_ENV: production
           RUBY_VERSION: ${{ env.RUBY_VERSION }}
           DOCKER_BUILDKIT: 1
