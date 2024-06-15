@@ -24,6 +24,21 @@ end
 require "rubygems"
 require "bundler/setup"
 
+# Load destination env files, eg development, staging, production env files
+# https://github.com/basecamp/kamal/issues/233#issuecomment-1750122907
+# it monkey-patches the dotenv-rails load_envs method
+require "kamal"
+require 'kamal/cli/base'
+Kamal::Cli::Base.class_eval do
+  private
+
+  def load_envs
+    if destination = options[:destination]
+      Dotenv.load(".env.#{destination}.deploy", ".env.#{destination}", ".env")
+    else
+      Dotenv.load(".env.deploy", ".env")
+    end
+  end
+end
+
 load Gem.bin_path("kamal", "kamal")
-
-
