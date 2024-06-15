@@ -442,11 +442,8 @@ accessories:
     host: <%= ip %>
     port: 5432
     env:
-      clear:
-        POSTGRES_USER: 'postgres'
-        POSTGRES_DB: "<%= service_name %>_production"
       secret:
-        - POSTGRES_PASSWORD
+        - DATABASE_URL
     volumes:
       - postgres:/var/lib/postgresql/data
 
