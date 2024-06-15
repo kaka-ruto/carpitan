@@ -83,3 +83,5 @@ gem "whenever", require: false
 gem "responders", github: "heartcombo/responders", branch: "main"
 # Deploy to a VPS
 gem "kamal"
+# Error tracking
+gem "honeybadger"
