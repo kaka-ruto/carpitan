@@ -80,4 +80,3 @@ test:
 production:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
-  host: <%= ENV["POSTGRES_HOST"] %>

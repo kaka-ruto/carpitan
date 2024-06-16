@@ -389,12 +389,12 @@ registry:
 # Inject ENV variables into containers (secrets come from .env).
 # Remember to run `kamal env push` after making changes!
 env:
-  clear:
-    POSTGRES_HOST: "<%= ip %>" # With the pattern: <service_name>-<accessory_name>
   secret:
     - KAMAL_REGISTRY_PASSWORD
     - RAILS_MASTER_KEY
     - WEB_HOST
+    - DATABASE_URL
+    - REDIS_URL
 
 # Use a different ssh user than root
 # ssh:
@@ -443,6 +443,9 @@ accessories:
     port: 5432
     env:
       secret:
+        - POSTGRES_PASSWORD
+        - POSTGRES_USER
+        - POSTGRES_DB
         - DATABASE_URL
     directories:
       - data:/var/lib/postgresql/data
