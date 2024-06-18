@@ -18,6 +18,11 @@
       </ul>
 
       <ul class="navbar-nav">
+        <li class="nav-item">
+          <%= link_to "https://github.com/kaka-ruto/carpitan", target: "_blank", class: "nav-link" do %>
+            <i class="fab fa-github"></i>
+          <% end %>
+        </li>
         <li class="nav-item"><%= link_to "What's New", announcements_path, class: "nav-link #{unread_announcements(current_user)}" %></li>
         <% if user_signed_in? %>
 
