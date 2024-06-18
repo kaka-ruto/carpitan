@@ -18,14 +18,14 @@
       <div class="mb-3">
         <% if vote.persisted? %>
           <div class="float-end">
-            <%= link_to 'Destroy', vote, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'Destroy', legislation_vote_path(vote), method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
           </div>
         <% end %>
 
         <%= form.submit class: 'btn btn-primary' %>
 
         <% if vote.persisted? %>
-          <%= link_to "Cancel", vote, class: "btn btn-link" %>
+          <%= link_to "Cancel", legislation_vote_path(vote), class: "btn btn-link" %>
         <% else %>
           <%= link_to "Cancel", legislation_votes_path, class: "btn btn-link" %>
         <% end %>

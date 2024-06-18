@@ -40,7 +40,7 @@ class VotesController < ApplicationController
   def update
     respond_to do |format|
       if @vote.update(vote_params)
-        format.html { redirect_to vote_url(@vote), notice: "Vote was successfully updated." }
+        format.html { redirect_to legislation_vote_url(@vote.legislation, @vote), notice: "Vote was successfully updated." }
         format.json { render :show, status: :ok, location: @vote }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,7 +54,7 @@ class VotesController < ApplicationController
     @vote.destroy!
 
     respond_to do |format|
-      format.html { redirect_to votes_url, notice: "Vote was successfully destroyed." }
+      format.html { redirect_to legislation_path(@vote.legislation), notice: "Vote was successfully destroyed." }
       format.json { head :no_content }
     end
   end
