@@ -1,0 +1,49 @@
+<%= form_with(model: vote) do |form| %>
+  <% if vote.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(vote.errors.count, "error") %> prohibited this vote from being saved:</h2>
+
+      <ul>
+      <% vote.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :type, class: 'form-label' %>
+      <%= form.text_field :type, class: 'form-control' %>
+    </div>
+
+  <div class="mb-3">
+    <%= form.label :politician_id, class: 'form-label' %>
+      <%= form.text_field :politician_id, class: 'form-control' %>
+    </div>
+
+  <div class="mb-3">
+    <%= form.label :legislation_id, class: 'form-label' %>
+      <%= form.text_field :legislation_id, class: 'form-control' %>
+    </div>
+
+  <div class="mb-3">
+    <%= form.label :user_id, class: 'form-label' %>
+      <%= form.text_field :user_id, class: 'form-control' %>
+    </div>
+
+  <div class="mb-3">
+    <% if vote.persisted? %>
+      <div class="float-end">
+        <%= link_to 'Destroy', vote, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+
+    <%= form.submit class: 'btn btn-primary' %>
+
+    <% if vote.persisted? %>
+      <%= link_to "Cancel", vote, class: "btn btn-link" %>
+    <% else %>
+      <%= link_to "Cancel", votes_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+<% end %>

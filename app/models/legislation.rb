@@ -1,6 +1,7 @@
 class Legislation < ApplicationRecord
   belongs_to :user
 
+  has_many :votes, dependent: :destroy
   has_many :politicians, through: :votes
 
   validates :title, presence: true

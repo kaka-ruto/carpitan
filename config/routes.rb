@@ -26,5 +26,7 @@ Rails.application.routes.draw do
 
   resources :politicians
   resources :businesses
-  resources :legislations
+  resources :legislations do
+    resources :votes
+  end
 end

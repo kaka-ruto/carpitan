@@ -155,6 +155,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_110019) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.string "type"
+    t.bigint "politician_id", null: false
+    t.bigint "legislation_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["legislation_id"], name: "index_votes_on_legislation_id"
+    t.index ["politician_id"], name: "index_votes_on_politician_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "businesses", "politicians"
@@ -162,4 +174,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_110019) do
   add_foreign_key "legislations", "users"
   add_foreign_key "politicians", "users"
   add_foreign_key "services", "users"
+  add_foreign_key "votes", "legislations"
+  add_foreign_key "votes", "politicians"
+  add_foreign_key "votes", "users"
 end
