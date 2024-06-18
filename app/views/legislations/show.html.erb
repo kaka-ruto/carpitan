@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <%= render 'card_body', legislation: @legislation %>
+        <div class="card-footer">
+          <%= link_to 'All Legislations', legislations_path, class: 'btn btn-secondary' %>
+          <% if @legislation.user == current_user %>
+            <%= link_to 'Edit', edit_legislation_path(@legislation), class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

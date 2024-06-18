@@ -11,4 +11,5 @@ class User < ApplicationRecord
   has_many :services
   has_many :businesses
   has_many :politicians
+  has_many :legislations
 end

@@ -1,0 +1,44 @@
+<div class="card-body">
+  <h1 class="card-title"><%= legislation.title %></h1>
+  <p class="card-text">
+    <strong>Status:</strong> <%= legislation.status %>
+  </p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Description</h4>
+          <p class="card-text"><%= legislation.description %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Votes</h4>
+          <% if legislation.votes.any? %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Politician</th>
+                  <th>Vote</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% legislation.votes.each do |vote| %>
+                  <tr>
+                    <td><%= link_to vote.politician.name, politician_path(vote.politician) %></td>
+                    <td><%= vote.vote_type %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <p class="card-text">No votes recorded yet</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

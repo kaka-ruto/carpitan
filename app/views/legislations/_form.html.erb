@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-lg-4 offset-lg-4">
+    <h1 class="text-center">Create a new legislation</h1>
+
+    <%= form_for(legislation) do |form| %>
+      <%= render "devise/shared/error_messages", resource: legislation %>
+
+      <div class="mb-3">
+        <% if legislation.persisted? %>
+          <div class="float-end">
+            <%= link_to 'Destroy', legislation, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :title, class: 'form-label' %>
+        <%= form.text_field :title, class: 'form-control' %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :description, class: 'form-label' %>
+        <%= form.text_area :description, rows: 10, class: 'form-control' %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :status, class: 'form-label' %>
+        <%= form.select :status, Legislation.statuses.keys, {}, class: 'form-select' %>
+      </div>
+
+      <div class="mb-3 d-grid">
+        <%= form.submit class: 'btn btn-primary' %>
+
+        <% if legislation.persisted? %>
+          <%= link_to "Cancel", legislation, class: "btn btn-link" %>
+        <% else %>
+          <%= link_to "Cancel", legislations_path, class: "btn btn-link" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+</div>
