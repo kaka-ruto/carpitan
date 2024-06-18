@@ -15,24 +15,29 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Votes</h4>
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Votes</h4>
+            <%= link_to 'Add Vote', new_legislation_vote_path(legislation), class: 'btn btn-primary' %>
+          </div>
+          <hr>
           <% if legislation.votes.any? %>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Politician</th>
-                  <th>Vote</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% legislation.votes.each do |vote| %>
-                  <tr>
-                    <td><%= link_to vote.politician.name, politician_path(vote.politician) %></td>
-                    <td><%= vote.vote_type %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+            <div class="vote-list">
+              <% legislation.votes.each_with_index do |vote, index| %>
+                <div class="vote-item d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center">
+                    <div class="vote-number me-2">
+                      <%= index + 1 %>.
+                    </div>
+                    <div class="politician-name">
+                      <%= link_to vote.politician.name, politician_path(vote.politician) %>
+                    </div>
+                  </div>
+                  <div class="vote-choice">
+                    <%= vote_choice(vote) %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
           <% else %>
             <p class="card-text">No votes recorded yet</p>
           <% end %>
@@ -41,4 +46,3 @@
     </div>
   </div>
 </div>
-

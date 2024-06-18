@@ -1,20 +1,15 @@
-<div class="page-header">
-  <%= link_to votes_path, class: 'btn btn-default' do %>
-    All Votes
-  <% end %>
-  <%= link_to edit_vote_path(@vote), class: 'btn btn-primary' do %>
-    Edit
-  <% end %>
-  <h1>Show vote</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <%= render 'card_body', vote: @vote %>
+        <div class="card-footer">
+          <%= link_to 'All Legislation Votes', legislation_votes_path(@vote.legislation), class: 'btn btn-secondary' %>
+          <% if @vote.user == current_user %>
+            <%= link_to 'Edit', edit_legislation_vote_path(@vote.legislation, @vote), class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<dl class="dl-horizontal">
-  <dt>Type:</dt>
-  <dd><%= @vote.type %></dd>
-  <dt>Politician:</dt>
-  <dd><%= @vote.politician %></dd>
-  <dt>Legislation:</dt>
-  <dd><%= @vote.legislation %></dd>
-  <dt>User:</dt>
-  <dd><%= @vote.user %></dd>
-</dl>

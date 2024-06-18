@@ -16,11 +16,12 @@
         <div class="card mb-4">
           <div class="card-body">
             <h5 class="card-title"><%= legislation.title %></h5>
-            <p class="card-text"><%= legislation.description %></p>
             <p class="card-text"><strong>Status:</strong> <%= legislation.status %></p>
+            <p class="card-text"><%= legislation.description %></p>
           </div>
-          <div class="card-footer bg-transparent">
+          <div class="card-footer bg-transparent d-flex justify-content-between">
             <%= link_to 'View Details', legislation_path(legislation), class: 'btn btn-primary' %>
+            <%= link_to 'Add Vote', new_legislation_vote_path(legislation), class: 'btn btn-success' %>
           </div>
         </div>
       </div>

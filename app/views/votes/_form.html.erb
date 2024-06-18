@@ -1,49 +1,36 @@
-<%= form_with(model: vote) do |form| %>
-  <% if vote.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(vote.errors.count, "error") %> prohibited this vote from being saved:</h2>
+<div class="row">
+  <div class="col-lg-4 offset-lg-4">
+    <h1 class="text-center">Create a new vote</h1>
 
-      <ul>
-      <% vote.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <%= form_with(model: vote, url: vote.persisted? ? legislation_vote_path(vote) : legislation_votes_path, local: true) do |form| %>
+      <%= render "devise/shared/error_messages", resource: vote %>
 
-  <div class="mb-3">
-    <%= form.label :type, class: 'form-label' %>
-      <%= form.text_field :type, class: 'form-control' %>
-    </div>
+      <div class="mb-3">
+        <%= form.label :politician_id, class: 'form-label' %>
+        <%= form.select :politician_id, Politician.all.collect { |p| [p.name, p.id] }, { include_blank: "Select politician" }, class: "form-select" %>
+      </div>
 
-  <div class="mb-3">
-    <%= form.label :politician_id, class: 'form-label' %>
-      <%= form.text_field :politician_id, class: 'form-control' %>
-    </div>
+      <div class="mb-3">
+        <%= form.label :choice, class: 'form-label' %>
+        <%= form.select :choice, Vote.choices.keys, {}, class: 'form-select' %>
+      </div>
 
-  <div class="mb-3">
-    <%= form.label :legislation_id, class: 'form-label' %>
-      <%= form.text_field :legislation_id, class: 'form-control' %>
-    </div>
+      <div class="mb-3">
+        <% if vote.persisted? %>
+          <div class="float-end">
+            <%= link_to 'Destroy', vote, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+          </div>
+        <% end %>
 
-  <div class="mb-3">
-    <%= form.label :user_id, class: 'form-label' %>
-      <%= form.text_field :user_id, class: 'form-control' %>
-    </div>
+        <%= form.submit class: 'btn btn-primary' %>
 
-  <div class="mb-3">
-    <% if vote.persisted? %>
-      <div class="float-end">
-        <%= link_to 'Destroy', vote, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+        <% if vote.persisted? %>
+          <%= link_to "Cancel", vote, class: "btn btn-link" %>
+        <% else %>
+          <%= link_to "Cancel", legislation_votes_path, class: "btn btn-link" %>
+        <% end %>
       </div>
     <% end %>
-
-    <%= form.submit class: 'btn btn-primary' %>
-
-    <% if vote.persisted? %>
-      <%= link_to "Cancel", vote, class: "btn btn-link" %>
-    <% else %>
-      <%= link_to "Cancel", votes_path, class: "btn btn-link" %>
-    <% end %>
   </div>
-<% end %>
+</div>
+</div>

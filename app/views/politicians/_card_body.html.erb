@@ -2,7 +2,7 @@
   <h1 class="card-title"><%= politician.name %></h1>
   <p class="card-text">
   <strong>Position:</strong> <%= politician.position %><br>
-  <strong>Jurisdiction:</strong> <%= politician.political_party %>
+  <strong>Jurisdiction:</strong> <%= politician.jurisdiction %>
   </p>
   <div class="row">
     <div class="col-md-6">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card">
+      <div class="card mb-3">
         <div class="card-body">
           <h4 class="card-title">Businesses</h4>
           <% if politician.businesses.any? %>
@@ -38,6 +38,7 @@
           <% end %>
         </div>
       </div>
+      <%= render "votes", politician: politician %>
     </div>
   </div>
 </div>

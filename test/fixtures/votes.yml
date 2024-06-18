@@ -1,13 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  type: 
+  choice:
   politician: one
   legislation: one
   user: one
 
 two:
-  type: 
+  choice:
   politician: two
   legislation: two
   user: two

@@ -1,49 +1,25 @@
-
-
-
-<div class="row">
-  <div class="col-sm-6">
-    <h1>Votes</h1>
-  </div>
-
-  <div class="col-sm-6 text-end">
-  <%= link_to new_vote_path, class: 'btn btn-primary' do %>
-    Add New Vote
-  <% end %>
-  </div>
-</div>
-
-<div class="table-responsive">
-  <table class="table table-striped table-bordered table-hover">
-    <thead>
-      <tr>
-    
-
-            <th>Type</th>
-            <th>Politician</th>
-            <th>Legislation</th>
-            <th>User</th>
-            
-          <th></th>
-        
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @votes.each do |vote| %>
-        <%= content_tag :tr, id: dom_id(vote), class: dom_class(vote) do %>
-          
-
-                      <td><%= vote.type %></td>
-                      <td><%= vote.politician %></td>
-                      <td><%= vote.legislation %></td>
-                      <td><%= vote.user %></td>
-          
-          
-            <td><%= link_to 'Show', vote %></td>
-          
-        <% end %>
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h1 class="display-4">Legislation Votes</h1>
+    </div>
+    <div class="col-md-6 text-end">
+      <%= link_to new_legislation_vote_path, class: 'btn btn-primary btn-lg' do %>
+        <i class="bi bi-plus-circle me-2"></i> Add New Vote
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <% @votes.each do |vote| %>
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <%= render 'card_body', vote: vote %>
+          <div class="card-footer bg-transparent">
+            <%= link_to 'View Details', legislation_vote_path(vote.legislation, vote), class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

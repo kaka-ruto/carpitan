@@ -1,0 +1,45 @@
+<div class="card-body">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="card-title mb-0">Votes</h1>
+    <%= link_to 'Add New Vote', legislations_path, class: 'btn btn-primary' %>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Legislation</h4>
+          <% if vote.legislation %>
+            <p class="card-text">
+              <strong>Title:</strong> <%= link_to vote.legislation.title, legislation_path(vote.legislation) %><br>
+              <strong>Description:</strong> <%= vote.legislation.description %><br>
+              <strong>Status:</strong> <%= vote.legislation.status %>
+            </p>
+          <% else %>
+            <p class="card-text">No legislation associated.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Politician</h4>
+          <% if vote.politician %>
+            <p class="card-text">
+              <strong>Name:</strong> <%= link_to vote.politician.name, politician_path(vote.politician) %><br>
+              <strong>Position:</strong> <%= vote.politician.position %><br>
+              <strong>Jurisdiction:</strong> <%= vote.politician.jurisdiction %><br>
+              <strong>Vote:</strong> <%= vote_choice(vote) %>
+            </p>
+          <% else %>
+            <p class="card-text">No politician associated.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4">
+    <%= link_to 'Edit', edit_legislation_vote_path(vote.legislation, vote), class: 'btn btn-primary' %>
+    <%= link_to 'Back', legislation_votes_path(vote.legislation), class: 'btn btn-secondary' %>
+  </div>
+</div>
