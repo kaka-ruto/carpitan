@@ -1,0 +1,44 @@
+<div class="event-container">
+  <div class="event-header">
+    <div class="header-text">
+      <h1 class="event-title">Heroes for <%= @event.name %></h1>
+      <h1 class="event-title">Location: <%= @event.location %></h1>
+      <p class="event-description">A list of all the Patriots and Heroes</p>
+    </div>
+    <div class="header-button">
+      <%= link_to 'Add a Hero', new_event_supporter_path(@event), class: "add-traitor-button" %>
+    </div>
+  </div>
+  <div class="event-content">
+    <div class="table-wrapper">
+      <div class="table-container">
+        <div class="table-inner">
+          <table class="traitors-table">
+            <thead class="table-head">
+              <tr>
+                <th scope="col" class="column-name">Name</th>
+                <th scope="col" class="column-handles">Contact Info</th>
+                <th scope="col" class="column-tweet">Role</th>
+                <th scope="col" class="column-tweet">Category</th>
+                <th scope="col" class="column-edit"><span class="sr-only">Edit</span></th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <% @supporters.each do |supporter| %>
+                <tr class="table-row">
+                  <%= link_to event_supporter_path(@event, supporter), class: 'row-link' do %>
+                    <td class="traitor-name"><%= supporter.name %></td>
+                    <td class="traitor-handles"><%= supporter.contact_info %></td>
+                    <td class="traitor-tweet"><%= supporter.role %></td>
+                    <td class="traitor-name"><%= supporter.category %></td>
+                  <% end %>
+                  <td class="traitor-edit"><%= link_to 'Edit', edit_event_supporter_path(@event, supporter), class: 'edit-link' %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

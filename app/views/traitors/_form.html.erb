@@ -1,0 +1,44 @@
+<%= form_with(model: [@event, @traitor], local: true, class: "traitor-form") do |form| %>
+  <% if @traitor.errors.any? %>
+    <div class="traitor-form-errors" role="alert">
+      <strong class="error-count"><%= pluralize(@traitor.errors.count, "error") %> prevented this traitor from being saved:</strong>
+      <ul>
+        <% @traitor.errors.full_messages.each do |message| %>
+          <li class="error-message"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-header">
+    <%= link_to event_traitors_path(@event), class: "back-button" do %>
+      <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a1 1 0 01-.707-.293l-7-7a1 1 0 010-1.414l7-7a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l5.293 5.293a1 1 0 01-.707 1.707z" clip-rule="evenodd" />
+      </svg>
+      Back
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-input" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :handles, "X/Twitter Handles", class: "form-label" %>
+    <%= form.text_field :handles, class: "form-input" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :linked_tweet, class: "form-label" %>
+    <%= form.text_field :linked_tweet, class: "form-input" %>
+  </div>
+
+  <div class="form-group hidden">
+    <%= form.hidden_field :screenshot, class: "form-input" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit "Save", class: "submit-button" %>
+  </div>
+<% end %>
