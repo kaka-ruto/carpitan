@@ -275,7 +275,7 @@ Devise.setup do |config|
 
   env_creds = Rails.application.credentials[:omniauth] || {}
   %i[facebook twitter].each do |provider|
-    if options = env_creds[provider]
+    if (options = env_creds[provider])
       config.omniauth provider, options[:public_key], options[:private_key], options.fetch(:options, {})
     end
   end

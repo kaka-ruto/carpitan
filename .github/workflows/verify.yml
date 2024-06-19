@@ -15,9 +15,8 @@ jobs:
     uses: setup-rails/setup-rails/.github/workflows/verify.yml@v1
     # uncomment to enable options:
     #
-    # with:
-    #   brakeman: true
-    #   bundler-audit: true
-    #   rspec: true
-    #   rubocop: true
-    # standard: true
+    with:
+      brakeman: true
+      bundler-audit: true
+      # standard: true
+      # rspec: true

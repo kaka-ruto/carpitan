@@ -17,7 +17,7 @@ class LegislationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create legislation" do
     assert_difference("Legislation.count") do
-      post legislations_url, params: { legislation: { description: @legislation.description, status: @legislation.status, title: @legislation.title, user_id: @legislation.user_id } }
+      post legislations_url, params: {legislation: {description: @legislation.description, status: @legislation.status, title: @legislation.title, user_id: @legislation.user_id}}
     end
 
     assert_redirected_to legislation_url(Legislation.last)
@@ -34,7 +34,7 @@ class LegislationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update legislation" do
-    patch legislation_url(@legislation), params: { legislation: { description: @legislation.description, status: @legislation.status, title: @legislation.title, user_id: @legislation.user_id } }
+    patch legislation_url(@legislation), params: {legislation: {description: @legislation.description, status: @legislation.status, title: @legislation.title, user_id: @legislation.user_id}}
     assert_redirected_to legislation_url(@legislation)
   end
 

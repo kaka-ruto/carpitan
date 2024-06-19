@@ -4,7 +4,7 @@
   <div class="card-body">
     <% @announcements.each_with_index do |announcement, index| %>
       <% if index != 0 %>
-        <div class="row"><div class="col"><hr /></div></div>
+        <div class="row"><div class="col"><hr></div></div>
       <% end %>
 
       <div class="row announcement" id="<%= dom_id(announcement) %>">

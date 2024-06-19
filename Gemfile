@@ -47,6 +47,12 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows]
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem "brakeman", require: false
+  gem "bundler-audit", require: false
+  # Lint code for consistent style
+  gem "standard", require: false
+  gem "erb_lint", require: false
 end
 
 group :development do

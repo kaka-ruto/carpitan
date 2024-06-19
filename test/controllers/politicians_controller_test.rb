@@ -17,7 +17,7 @@ class PoliticiansControllerTest < ActionDispatch::IntegrationTest
 
   test "should create politician" do
     assert_difference("Politician.count") do
-      post politicians_url, params: { politician: {  } }
+      post politicians_url, params: {politician: {}}
     end
 
     assert_redirected_to politician_url(Politician.last)
@@ -34,7 +34,7 @@ class PoliticiansControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update politician" do
-    patch politician_url(@politician), params: { politician: {  } }
+    patch politician_url(@politician), params: {politician: {}}
     assert_redirected_to politician_url(@politician)
   end
 
