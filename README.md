@@ -2,6 +2,17 @@
 
 For political accountability and power to the people.
 
+## Goals
+
+This project aims to:
+
+1. Keep a list of political leaders, their jurisdictions, businesses and anything they own that is of public interest
+2. Keep a list of all legislations, their movers, votes, voters and results
+3. Keep a list of all an elected leader did or achieved from their election date
+4. A place to organize peaceful protests.
+5. A place to amass public participation of governance issues
+6. Be a global open source platform championing the voice of the people over various governments
+
 ## Requirements
 
 You'll need the following installed to run the template successfully:
@@ -64,7 +75,6 @@ Before you start, make sure you have the following installed on your machine:
 - Docker
 - Docker Compose
 
-
 #### 1. Configure Environment Variables
 
 Update the environment variables in the `docker-compose.yml` file if necessary. Ensure you have set the `SECRET_KEY_BASE` for your Rails application and the database credentials:
@@ -83,8 +93,8 @@ services:
       REDIS_URL: redis://redis:6379/1
       RAILS_ENV: production
       SECRET_KEY_BASE: your_generated_secret_key_base
-      ASSUME_SSL: 'false'
-      FORCE_SSL: 'false'
+      ASSUME_SSL: "false"
+      FORCE_SSL: "false"
 ```
 
 You can generate a secret key base using the following Rails command:
@@ -110,8 +120,6 @@ Once the containers are up and running, you can access the Rails application in 
 ```
 http://localhost:3000
 ```
-
-
 
 ## Contributing
 
