@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: carpitan_production
+      POSTGRES_USER: carpitan
+      POSTGRES_PASSWORD: secretpassword
+
+  redis:
+    image: redis:6.0
+    volumes:
+      - redis_data:/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ./bin/rails server -b 0.0.0.0
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgres://carpitan:secretpassword@db/carpitan_production
+      REDIS_URL: redis://redis:6379/1
+      RAILS_ENV: production
+      SECRET_KEY_BASE: your_generated_secret_key_base
+      ASSUME_SSL: 'false'
+      FORCE_SSL: 'false'
+    entrypoint: ["./bin/docker-entrypoint"]
+
+volumes:
+  postgres_data:
+  redis_data:

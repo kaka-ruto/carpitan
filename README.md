@@ -49,9 +49,69 @@ This starts up Overmind (or Foreman) running the processes defined in `Procfile.
 
 See the [Installation docs](https://jumpstartrails.com/docs/installation#windows)
 
-#### Running with Docker or Docker Compose
+#### Running with Docker or Docker Compose (With Jumpstart)
 
 See the [Installation docs](https://jumpstartrails.com/docs/installation#docker)
+
+#### Running with Docker or Docker Compose (Without Jumpstart)
+
+This Docker Compose setup provides a complete environment for running a Rails application with PostgreSQL and Redis. The configuration includes three services: a PostgreSQL database (`db`), a Redis instance (`redis`), and the Rails web application (`web`).
+
+#### Prerequisites
+
+Before you start, make sure you have the following installed on your machine:
+
+- Docker
+- Docker Compose
+
+
+#### 1. Configure Environment Variables
+
+Update the environment variables in the `docker-compose.yml` file if necessary. Ensure you have set the `SECRET_KEY_BASE` for your Rails application and the database credentials:
+
+```yaml
+services:
+  db:
+    environment:
+      POSTGRES_DB: carpitan_production
+      POSTGRES_USER: carpitan
+      POSTGRES_PASSWORD: secretpassword
+
+  web:
+    environment:
+      DATABASE_URL: postgres://carpitan:secretpassword@db/carpitan_production
+      REDIS_URL: redis://redis:6379/1
+      RAILS_ENV: production
+      SECRET_KEY_BASE: your_generated_secret_key_base
+      ASSUME_SSL: 'false'
+      FORCE_SSL: 'false'
+```
+
+You can generate a secret key base using the following Rails command:
+
+```bash
+rails secret
+```
+
+#### 2. Build and Start the Containers
+
+Build and start the containers using Docker Compose:
+
+```bash
+docker-compose up --build
+```
+
+This command will build the Docker image for the Rails application and start all the services defined in the `docker-compose.yml` file.
+
+#### 3. Access the Application
+
+Once the containers are up and running, you can access the Rails application in your web browser at:
+
+```
+http://localhost:3000
+```
+
+
 
 ## Contributing
 
