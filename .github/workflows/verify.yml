@@ -12,7 +12,7 @@ on:
 
 jobs:
   verify:
-    uses: setup-rails/setup-rails/.github/workflows/verify.yml@v1
+    uses: setup-rails/setup-rails/.github/workflows/verify.yml@main
     # uncomment to enable options:
     #
     with:
