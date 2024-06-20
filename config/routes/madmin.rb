@@ -1,5 +1,8 @@
 # Below are the routes for madmin
 namespace :madmin do
+  resources :votes
+  resources :businesses
+  resources :politicians
   namespace :active_storage do
     resources :attachments
   end
