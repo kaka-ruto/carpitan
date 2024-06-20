@@ -1,5 +1,6 @@
 # Below are the routes for madmin
 namespace :madmin do
+  resources :legislations
   resources :votes
   resources :businesses
   resources :politicians
