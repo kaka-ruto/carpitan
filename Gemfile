@@ -91,3 +91,4 @@ gem "responders", github: "heartcombo/responders", branch: "main"
 gem "kamal"
 # Error tracking
 gem "honeybadger"
+gem "hotwire_combobox"

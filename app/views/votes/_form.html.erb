@@ -6,8 +6,8 @@
       <%= render "devise/shared/error_messages", resource: vote %>
 
       <div class="mb-3">
-        <%= form.label :politician_id, class: 'form-label' %>
-        <%= form.select :politician_id, Politician.all.collect { |p| [p.name, p.id] }, { include_blank: "Select politician" }, class: "form-select" %>
+        <%= form.label :politician_id, class: 'form-label' %></br>
+        <%= form.combobox :politician_id, Politician.all %>
       </div>
 
       <div class="mb-3">
