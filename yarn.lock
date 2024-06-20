@@ -135,6 +135,11 @@
   resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.4.tgz#5c5361c06a37cdf10dcba4223f1afd0ca1c75091"
   integrity sha512-mlZEFUZrJnpfj+g/XeCWWuokvQyN68WvM78JM+0jfSFc98wegm259vCbC1zSllcspRwbgXK31ibehCy5PA78/Q==
 
+"@josefarias/hotwire_combobox@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@josefarias/hotwire_combobox/-/hotwire_combobox-0.3.1.tgz#80395c71aa57e22a4686d877eda32ce49a4cc9ec"
+  integrity sha512-LAxwhwYsYmBPAZdDP5qAHdwF5YJZP3nz1x/FNETKzX3cmKWibvzUwsEG980K9voTBwUHvd6wXdk+T9JR/Zm7QA==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"

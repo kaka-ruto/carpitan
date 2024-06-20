@@ -162,6 +162,10 @@ GEM
       activesupport (>= 6.1)
     hashie (5.0.0)
     honeybadger (5.11.2)
+    hotwire_combobox (0.3.1)
+      rails (>= 7.0.7.2)
+      stimulus-rails (>= 1.2)
+      turbo-rails (>= 1.2)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -450,6 +454,7 @@ DEPENDENCIES
   erb_lint
   friendly_id (~> 5.4)
   honeybadger
+  hotwire_combobox
   importmap-rails
   jbuilder
   jsbundling-rails

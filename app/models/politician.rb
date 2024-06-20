@@ -6,4 +6,8 @@ class Politician < ApplicationRecord
   validates :name, presence: true
   validates :position, presence: true
   validates :jurisdiction, presence: true
+
+  def to_combobox_display
+    name
+  end
 end
