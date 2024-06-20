@@ -1,14 +1,13 @@
 class VoteResource < Madmin::Resource
-  # Attributes
   attribute :id, form: false
   attribute :choice
-  attribute :created_at, form: false
-  attribute :updated_at, form: false
 
-  # Associations
   attribute :politician
   attribute :legislation
   attribute :user
+
+  attribute :created_at, form: false
+  attribute :updated_at, form: false
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

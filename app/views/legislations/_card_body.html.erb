@@ -40,6 +40,12 @@
                     <div class="politician-name">
                       <%= link_to vote.politician.name, politician_path(vote.politician) %>
                     </div>
+                    <div>
+                      <small class="ms-2">
+                        <%= vote.politician.position %>
+                        <%= vote.politician.jurisdiction %>
+                      </small>
+                    </div>
                   </div>
                   <div class="vote-choice">
                     <%= vote_choice(vote) %>
