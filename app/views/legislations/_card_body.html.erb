@@ -19,6 +19,15 @@
             <h4 class="card-title mb-0">Votes</h4>
             <%= link_to 'Add Vote', new_legislation_vote_path(legislation), class: 'btn btn-primary' %>
           </div>
+          <div class="row mt-3">
+            <div class="col">
+              <div class="vote-tally small">
+                <span class="yes-votes">Yes: <%= legislation.yes_votes %></span>
+                <span class="no-votes">No: <%= legislation.no_votes %></span>
+                <span class="abstain-votes">Abstain: <%= legislation.abstain_votes %></span>
+              </div>
+            </div>
+          </div>
           <hr>
           <% if legislation.votes.any? %>
             <div class="vote-list">
