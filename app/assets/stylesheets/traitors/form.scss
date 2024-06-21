@@ -34,7 +34,7 @@
     .back-button {
       display: inline-flex;
       align-items: center;
-      background-color: #a0aec0; // gray-500
+      background-color: rgba(66, 153, 225, 0.6); // gray-500
       color: #fff; // white
       font-weight: bold;
       padding: 0.5rem 1rem;
@@ -42,7 +42,7 @@
       text-decoration: none;
 
       &:hover {
-        background-color: #718096; // gray-700
+        background-color: rgba(8, 133, 236, 0.6); // gray-700
       }
 
       .back-icon {

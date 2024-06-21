@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :events do
     resources :traitors
+    resources :supporters
   end
 
   resources :notifications, only: [:index]

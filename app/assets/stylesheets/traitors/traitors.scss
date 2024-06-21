@@ -103,3 +103,15 @@
     }
   }
 }
+
+.row-link {
+  display: contents;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.table-row:hover {
+  background-color: #f0f0f0; /* Optional: Add a hover effect */
+}
+

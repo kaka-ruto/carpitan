@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_18_231824) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_21_164711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -147,6 +147,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_231824) do
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 
+  create_table "supporters", force: :cascade do |t|
+    t.string "name"
+    t.string "contact_info"
+    t.string "function"
+    t.string "category"
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_supporters_on_event_id"
+  end
+
   create_table "traitors", force: :cascade do |t|
     t.string "name"
     t.string "handles"
@@ -193,6 +204,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_231824) do
   add_foreign_key "legislations", "users"
   add_foreign_key "politicians", "users"
   add_foreign_key "services", "users"
+  add_foreign_key "supporters", "events"
   add_foreign_key "traitors", "events"
   add_foreign_key "votes", "legislations"
   add_foreign_key "votes", "politicians"
