@@ -8,6 +8,10 @@ class Legislation < ApplicationRecord
 
   enum status: {proposed: "proposed", passed: "passed", failed: "failed"}
 
+  def total_votes
+    votes.count
+  end
+
   def yes_votes
     votes.yes.count
   end

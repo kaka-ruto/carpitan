@@ -9,6 +9,15 @@ class LegislationsController < ApplicationController
 
   # GET /legislations/1 or /legislations/1.json
   def show
+    @votes = @legislation.votes
+
+    if params[:filter]
+      @votes = if params[:filter] == "all"
+        @votes
+      else
+        @votes.where(choice: params[:filter])
+      end
+    end
   end
 
   # GET /legislations/new
