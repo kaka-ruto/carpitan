@@ -13,7 +13,7 @@ env:
   WEB_HOST: ${{ secrets.WEB_HOST }}
   REGISTRY: ghcr.io
   IMAGE_NAME: kaka-ruto/carpitan
-  RUBY_VERSION: 3.3.0
+  RUBY_VERSION: 3.3.3
 
 jobs:
   CI:
