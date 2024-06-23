@@ -91,3 +91,5 @@ gem "responders", github: "heartcombo/responders", branch: "main"
 gem "kamal"
 # Error tracking
 gem "honeybadger"
+
+gem "tailwindcss-rails", "~> 2.6"
