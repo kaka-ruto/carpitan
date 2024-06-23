@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html class="h-100">
+<html class="h-full">
   <head>
     <title>
       <% if content_for?(:title) %>
@@ -19,19 +18,21 @@
     <%= render 'shared/head' %>
 
     <%= yield :head %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body class="d-flex flex-column h-100">
-    <%= render 'shared/navbar', class: 'sticky-top' %>
+  <body class="flex flex-col h-full">
+    <%= render 'shared/navbar', class: 'sticky top-0' %>
+    
+    <main class="flex-grow">
+      <%= render 'shared/notices' %>
 
-<main class="flex-grow-1">
-  <%= render 'shared/notices' %>
+      <div class="container mx-auto my-4">
+        <%= yield %>
+      </div>
+    </main>
 
-  <div class="container my-4">
-    <%= yield %>
-  </div>
-</main>
-
-<%= render 'shared/footer', class: 'mt-auto' %>
+    <%= render 'shared/footer', class: 'mt-auto' %>
   </body>
 </html>
