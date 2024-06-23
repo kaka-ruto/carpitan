@@ -1,0 +1,9 @@
+extensions:
+  - .js
+  - .css
+  - .scss
+  - .sass
+  - .module.css
+  - .module.scss
+  - .module.sass
+  - .pcss

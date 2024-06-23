@@ -5,19 +5,19 @@
   </div>
 <% end %>
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <div class="container mx-auto">
+<nav class="p-4">
+  <div class="mx-auto flex justify-between items-center">
     <%= link_to Rails.configuration.application_name, root_path, class: "navbar-brand" %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav me-auto mt-2 mt-md-0">
+    <div class="flex gap-4" id="navbarMain">
+      <ul class="me-auto mt-2 mt-md-0">
       </ul>
 
-      <ul class="navbar-nav">
+      <ul class="flex gap-4">
         <li class="nav-item">
           <%= link_to "https://github.com/kaka-ruto/carpitan", target: "_blank", class: "nav-link" do %>
             <i class="fab fa-github"></i>

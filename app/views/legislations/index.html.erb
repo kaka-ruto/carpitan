@@ -19,7 +19,7 @@
             <p class="card-text"><strong>Status:</strong> <%= legislation.status %></p>
             <p class="card-text"><%= legislation.description %></p>
           </div>
-          <div class="card-footer bg-transparent d-flex justify-content-between">
+          <div class="card-footer bg-transparent flex justify-between">
             <%= link_to 'View Details', legislation_path(legislation), class: 'btn btn-primary' %>
             <%= link_to 'Add Vote', new_legislation_vote_path(legislation), class: 'btn btn-success' %>
           </div>

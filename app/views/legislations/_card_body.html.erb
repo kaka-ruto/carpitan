@@ -15,7 +15,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
+          <div class="flex justify-between items-center">
             <h4 class="card-title mb-0">Votes</h4>
             <%= link_to 'Add Vote', new_legislation_vote_path(legislation), class: 'btn btn-primary' %>
           </div>
@@ -23,8 +23,8 @@
           <% if legislation.votes.any? %>
             <div class="vote-list">
               <% legislation.votes.each_with_index do |vote, index| %>
-                <div class="vote-item d-flex justify-content-between align-items-center mb-2">
-                  <div class="d-flex align-items-center">
+                <div class="vote-item flex justify-between items-center mb-2">
+                  <div class="flex items-center">
                     <div class="vote-number me-2">
                       <%= index + 1 %>.
                     </div>

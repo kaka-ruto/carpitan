@@ -1,6 +1,5 @@
 import { application } from "./application"
-import controllers from './**/*_controller.js'
-controllers.forEach((controller) => {
-  application.register(controller.name, controller.module.default)
-})
+import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
+const context = require.context(".", true, /_controller\.js$/)
+application.load(definitionsFromContext(context))
