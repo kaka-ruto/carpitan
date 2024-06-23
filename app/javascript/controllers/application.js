@@ -1,5 +1,5 @@
 import { Application } from "@hotwired/stimulus"
-
+import "../../assets/stylesheets/application.tailwind.css";
 const application = Application.start()
 
 // Configure Stimulus development experience
