@@ -9,12 +9,14 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Owner</h4>
-          <% if business.politician %>
-            <p class="card-text">
-            <strong>Name:</strong> <%= link_to business.politician.name, politician_path(business.politician) %><br>
-            <strong>Title:</strong> <%= business.politician.position %><br>
-            <strong>Jurisdiction:</strong> <%= business.politician.jurisdiction %>
-            </p>
+          <% if business.politicians.present? %>
+            <% business.politicians.each do |politician| %>
+              <p class="card-text">
+              <strong>Name:</strong> <%= link_to politician.name, politician_path(politician) %><br>
+              <strong>Title:</strong> <%= politician.position %><br>
+              <strong>Jurisdiction:</strong> <%= politician.jurisdiction %>
+              </p>
+            <%end%>
           <% else %>
             <p class="card-text">No politician associated.</p>
           <% end %>

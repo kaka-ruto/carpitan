@@ -1,5 +1,5 @@
-<%= form_for(business) do |form| %>
-  <%= render "devise/shared/error_messages", resource: business %>
+<%= form_for(affiliation) do |form| %>
+  <%= render "devise/shared/error_messages", resource: affiliation %>
 
   <div class="row">
     <div class="col-md-6">
@@ -9,51 +9,64 @@
       </div>
 
       <div class="mb-3">
+        <%= form.label :relationship, class: "form-label" %>
+        <%= form.select :relationship, Affiliation.relationships.keys.map { |r| [r.humanize, r] }, { include_blank: 'Select Relationship' }, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
         <%= link_to "Create New Politician", new_politician_path, class: "btn btn-secondary" %>
       </div>
     </div>
 
     <div class="col-md-6">
-      <% if business.persisted? %>
+      <% if affiliation.persisted? %>
         <div class="float-end">
-          <%= link_to 'Delete business', business, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+          <%= link_to 'Delete affiliation', affiliation, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
         </div>
       <% end %>
+      <%= form.fields_for :business do |business_form| %>
+        <%= business_form.hidden_field 'user_id', value: current_user.id  %>
 
-      <div class="mb-3">
-        <%= form.label :name, class: "form-label" %>
-        <%= form.text_field :name, class: "form-control" %>
-      </div>
+        <div class="mb-3">
+          <%= business_form.label :id, "Select business", class: "form-label" %>
+          <%= business_form.select :id, Business.all.collect { |p| [p.name, p.id] }, { include_blank: "Select or create one below" }, class: "form-control" %>
+        </div>
 
-      <div class="mb-3">
-        <%= form.label :business_phone, class: "form-label" %>
-        <%= form.text_field :business_phone, class: "form-control" %>
-      </div>
+        <div class="mb-3">
+          <%= business_form.label :name, class: "form-label" %>
+          <%= business_form.text_field :name, class: "form-control" %>
+        </div>
 
-      <div class="mb-3">
-        <%= form.label :business_email, class: "form-label" %>
-        <%= form.text_field :business_email, class: "form-control" %>
-      </div>
+        <div class="mb-3">
+          <%= business_form.label :business_phone, class: "form-label" %>
+          <%= business_form.text_field :business_phone, class: "form-control" %>
+        </div>
 
-      <div class="mb-3">
-        <%= form.label :address, class: "form-label" %>
-        <%= form.text_field :address, class: "form-control" %>
-      </div>
+        <div class="mb-3">
+          <%= business_form.label :business_email, class: "form-label" %>
+          <%= business_form.text_field :business_email, class: "form-control" %>
+        </div>
 
-      <div class="mb-3">
-        <%= form.label :industry, class: "form-label" %>
-        <%= form.text_field :industry, class: "form-control" %>
-      </div>
+        <div class="mb-3">
+          <%= business_form.label :address, class: "form-label" %>
+          <%= business_form.text_field :address, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= business_form.label :industry, class: "form-label" %>
+          <%= business_form.text_field :industry, class: "form-control" %>
+        </div>
+      <%end%>
 
       <div class="mb-3 d-grid">
-        <%= form.submit @business.new_record? ? "Create Business" : "Update Business", class: 'btn btn-primary' %>
+        <%= form.submit @affiliation.new_record? ? "Create Business" : "Update Business", class: 'btn btn-primary' %>
       </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <% if business.persisted? %>
+      <% if affiliation.persisted? %>
         <%= link_to "Cancel", business, class: "btn btn-link" %>
       <% else %>
         <%= link_to "Cancel", businesses_path, class: "btn btn-link" %>
