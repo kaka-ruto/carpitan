@@ -12,7 +12,7 @@ class BusinessResource < Madmin::Resource
 
   # Associations
   attribute :user
-  attribute :politician
+  attribute :politicians, through: :affiliations
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

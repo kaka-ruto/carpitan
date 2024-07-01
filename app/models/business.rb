@@ -1,6 +1,8 @@
 class Business < ApplicationRecord
   belongs_to :user
-  belongs_to :politician
+
+  has_many :affiliations
+  has_many :politicians, through: :affiliations
 
   validates :name, presence: true
 end

@@ -15,6 +15,7 @@ class BusinessesController < ApplicationController
   def new
     @business = current_user.businesses.new
     @politicians = Politician.all
+    @affiliation = Affiliation.new(business: @business)
   end
 
   # GET /businesses/1/edit

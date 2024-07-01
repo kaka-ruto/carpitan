@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :affiliations, only: :create
   draw :madmin
   get "/privacy", to: "home#privacy"
   get "/terms", to: "home#terms"
