@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :events do
+    resources :traitors
+    resources :supporters
+  end
+
   resources :notifications, only: [:index]
   resources :announcements, only: [:index]
   devise_for :users, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}

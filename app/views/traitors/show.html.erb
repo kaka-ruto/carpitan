@@ -1,0 +1,37 @@
+<h1 class="text-2xl font-bold mb-4">Loser's Details</h1>
+<%= link_to event_traitors_path, class: "bg-gray-700 hover:bg-gray-600 p-3 rounded-full" do %>
+   <svg
+    viewBox="0 0 16 16"
+    fill="none"
+    aria-hidden="true"
+    class="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 stroke-zinc-500 group-hover:stroke-zinc-400">
+    <path
+      d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+<% end %>
+
+<p class="mb-2">
+  <strong>Name:</strong>
+  <%= @traitor.name %>
+</p>
+
+<p class="mb-2">
+  <strong>Handles:</strong>
+  <%= @traitor.handles %>
+</p>
+
+<p class="mb-2">
+  <strong>Linked Tweet:</strong>
+  <%= link_to @traitor.linked_tweet, @traitor.linked_tweet, class: "text-blue-500" %>
+</p>
+
+<p class="mb-2">
+  <strong>Screenshot:</strong>
+  <%= image_tag @traitor.screenshot if @traitor.screenshot.present? %>
+</p>
+
+<%= link_to 'Edit', edit_event_traitor_path(@event, @traitor), class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2" %>
+<%= link_to 'Back', event_traitors_path(@event), class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" %>
