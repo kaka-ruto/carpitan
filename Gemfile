@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.3.3"
+ruby "3.3.4"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
@@ -51,8 +51,8 @@ group :development, :test do
   gem "brakeman", require: false
   gem "bundler-audit", require: false
   # Lint code for consistent style
-  gem "standard", require: false
   gem "erb_lint", require: false
+  gem "standard", require: false
 end
 
 group :development do
@@ -80,13 +80,13 @@ gem "name_of_person", github: "basecamp/name_of_person"
 gem "noticed", "~> 2.0"
 gem "omniauth-facebook", "~> 8.0"
 gem "omniauth-github", "~> 2.0"
-gem "omniauth-twitter", "~> 1.4"
 gem "omniauth-rails_csrf_protection"
+gem "omniauth-twitter", "~> 1.4"
 gem "pretender", "~> 0.3.4"
 gem "pundit", "~> 2.1"
+gem "responders", github: "heartcombo/responders", branch: "main"
 gem "sitemap_generator", "~> 6.1"
 gem "whenever", require: false
-gem "responders", github: "heartcombo/responders", branch: "main"
 # Deploy to a VPS
 gem "kamal"
 # Error tracking
