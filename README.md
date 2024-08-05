@@ -6,12 +6,55 @@ For political accountability and power to the people.
 
 This project aims to:
 
-1. Keep a list of political leaders, their jurisdictions, businesses and anything they own that is of public interest
-2. Keep a list of all legislations, their movers, votes, voters and results
-3. Keep a list of all an elected leader did or achieved from their election date
-4. A place to organize peaceful protests.
-5. A place to amass public participation of governance issues
-6. Be a global open source platform championing the voice of the people over various governments
+1. **Political Leaders Database**:
+   - comment: `if possible every information should have a source, if an article we can link to it, if a document lets provide the link to it , if possible have our own copy for the same with metadata that can be used to traceback originality of the information.`  
+   - **Details**: 
+     - List of political leaders with **names, locations, and jurisdictions** and anything they own that is of public interest
+     - Links to **publications**, **dissertations**, and **videos** related to their degrees (e.g., Master’s, Ph.D.).
+     - **Education background** (verified degrees and institutions).
+     - **Current net-worth**, including properties and asset declarations.
+     - **Previously held positions** and deliverables met.
+     - **Held companies** and **company partnerships**.
+     - **Primary contact information**.
+
+2. **Scandals and Legal Records**:
+   - **Details**: 
+     - List of **scandals** and **reported offenses**.
+     - Record of **all cases**, including **pending cases** and their outcomes.
+     - **Allegations** and any **debates and takes on issues**.
+     - **Previous utterances** with **original video evidence**.
+
+3. **Legislation Tracker**:
+   - **Details**:
+     - Detailed records of **legislations**, including **initiators, votes**, and **voters**.
+     - **Results** of legislative processes.
+     - all legislations, their movers, votes, voters and results
+
+4. **Leaders' Achievements Log**:
+   - **Details**:
+     - Documentation of **accomplishments and activities** from their election date.
+     - **Community initiatives** that have made an impact.
+
+5. **Protest Organization Platform**:
+   - **Details**:
+     - Tools for **scheduling, promoting, and organizing** peaceful protests.
+   - **objective**:
+     - A place to organize peaceful protests.
+
+
+6. **Public Participation Hub**:
+   - A place to amass public participation of governance issues
+   - **Details**:
+     - **Forums** and **discussion boards** for public engagement on governance issues.
+     - **Compilation of previous statements** and contributions.
+
+7. **Privacy and Consent Management**:
+   - **Details**:
+     - Features to manage **data privacy**, including consent for data use.
+     - **Anonymization options** where necessary.
+
+9. Be a global open source platform championing the voice of the people over various governments
+
 
 ## Requirements
 
