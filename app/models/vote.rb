@@ -6,5 +6,5 @@ class Vote < ApplicationRecord
   validates :politician_id, uniqueness: {scope: :legislation_id, message: "already voted on this legislation"}
   validates :choice, presence: true
 
-  enum choice: {yes: "yes", no: "no", abstain: "abstain"}
+  enum choice: {yes: "yes", no: "no", abstain: "abstain", unavailable: "unavailable"}
 end

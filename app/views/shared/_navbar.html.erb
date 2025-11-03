@@ -23,6 +23,10 @@
             <i class="fab fa-github"></i>
           <% end %>
         </li>
+        <li class="nav-item">
+          <%= link_to "Politicians", politicians_path, class: "nav-link" %>
+        </li>
+
         <li class="nav-item"><%= link_to "What's New", announcements_path, class: "nav-link #{unread_announcements(current_user)}" %></li>
         <% if user_signed_in? %>
 

@@ -1,0 +1,7 @@
+default: &default
+  politician_api: "https://finance-bill.pages.dev/js/consituency_relation.json"
+
+development:
+  <<: *default
+production:
+  <<: *default

@@ -40,3 +40,4 @@
 /node_modules
 
 /config/credentials/*.key
+/.idea

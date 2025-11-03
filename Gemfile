@@ -92,3 +92,4 @@ gem "kamal"
 # Error tracking
 gem "honeybadger"
 gem "hotwire_combobox"
+
